@@ -5,15 +5,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Phone {
 
-    private String phone;
+    private String number;
     private String ddd;
 
-    public String getPhone() {
-        return phone;
+    public String getNumber() {
+        return number;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getDdd() {

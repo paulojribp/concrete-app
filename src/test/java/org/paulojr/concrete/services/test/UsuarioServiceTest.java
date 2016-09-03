@@ -20,7 +20,7 @@ public class UsuarioServiceTest {
         user.setPassword("davi@2016");
         Phone phone = new Phone();
         phone.setDdd("11");
-        phone.setPhone("948372573");
+        phone.setNumber("948372573");
         user.setPhones(Arrays.asList(phone));
 
         JsonPath path = given()
