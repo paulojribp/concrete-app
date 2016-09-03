@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Usuario {
+public class User {
 
     @Id
     private String id;
@@ -67,4 +67,5 @@ public class Usuario {
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
     }
+
 }
