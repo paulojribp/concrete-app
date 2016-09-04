@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class ProfileControllerTesst {
+public class ProfileControllerTest {
 
     @LocalServerPort
     private int port;
