@@ -1,1 +1,1 @@
-java $JAVA_OPTS -jar -Dspring.profiles.active=prod --port=$PORT target/concrete*.jar
+java $JAVA_OPTS -jar target/concrete*.jar --spring.profiles.active=prod --port=$PORT
