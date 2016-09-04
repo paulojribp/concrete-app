@@ -28,6 +28,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar lastLogin;
 
+    @Column(unique = true)
     private String token;
 
     @ElementCollection

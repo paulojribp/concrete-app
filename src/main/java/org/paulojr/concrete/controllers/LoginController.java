@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<User> singIn(@RequestBody User user) {
-        user = service.validate(user);
+        user = userService.validate(user);
 
         return ResponseEntity.ok(user);
     }

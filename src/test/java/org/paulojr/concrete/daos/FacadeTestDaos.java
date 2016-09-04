@@ -17,7 +17,7 @@ public class FacadeTestDaos {
         int executed = manager.createNativeQuery("delete from User_phones")
                 .executeUpdate();
         if (executed > 0) {
-            executed = manager.createNativeQuery("delete from User")
+            executed = manager.createNativeQuery("delete from Users")
                     .executeUpdate();
         }
 

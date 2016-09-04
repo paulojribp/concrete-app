@@ -27,4 +27,21 @@ public class UserDao {
             return null;
         }
     }
+
+    public boolean tokenExists(String token) {
+        String jpql = "select count(u.token) from User u where u.token = :token";
+        try {
+            Long result = manager.createQuery(jpql, Long.class)
+                    .setParameter("token", token)
+                    .getSingleResult();
+
+            return result == 1;
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
+
+    public User findById(String id) {
+        return manager.find(User.class, id);
+    }
 }

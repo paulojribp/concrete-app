@@ -1,14 +1,21 @@
 package org.paulojr.concrete.services;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.paulojr.concrete.daos.UserDao;
 import org.paulojr.concrete.exceptions.EmailAlreadyUsedException;
+import org.paulojr.concrete.exceptions.InvalidTokenException;
 import org.paulojr.concrete.exceptions.NotAuthorizedException;
+import org.paulojr.concrete.exceptions.TokenNotFoundException;
 import org.paulojr.concrete.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Key;
 
 @Service
 public class UserService {
@@ -18,12 +25,25 @@ public class UserService {
 
     @Transactional
     public void create(User user) {
-        user.setPassword(encode(user.getPassword()));
         if (userExists(user)) {
             throw new EmailAlreadyUsedException();
         }
+        user.setPassword(encode(user.getPassword()));
+
+        String compactJws = generateToken(user);
+        user.setToken( compactJws );
+
+//        Jwts.parser().setSigningKey(key).parseClaimsJws(compactJws).getBody().getSubject()
 
         dao.create(user);
+    }
+
+    private String generateToken(User user) {
+        Key key = MacProvider.generateKey();
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .signWith(SignatureAlgorithm.HS512, key)
+                .compact();
     }
 
     public User validate(User user) {
@@ -51,4 +71,17 @@ public class UserService {
         return new BCryptPasswordEncoder().matches(simpleTextPassword, user.getPassword());
     }
 
+    public User validateUserByToken(String id, String token) {
+        if (!dao.tokenExists(token)) {
+            throw new TokenNotFoundException();
+        }
+
+        User user = dao.findById(id);
+
+        if (user == null || !token.equals(user.getToken())) {
+            throw new InvalidTokenException();
+        }
+
+        return user;
+    }
 }
