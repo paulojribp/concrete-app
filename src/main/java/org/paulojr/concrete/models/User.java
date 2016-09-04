@@ -1,9 +1,7 @@
 package org.paulojr.concrete.models;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,17 +13,36 @@ public class User {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar created;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar modified;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar lastLogin;
+
+    private String token;
 
     @ElementCollection
     private List<Phone> phones;
 
     @PrePersist
-    public void generateId() {
+    public void onCreate() {
         UUID uuid = UUID.randomUUID();
         this.id = uuid.toString();
+
+        this.created = Calendar.getInstance();
+        this.lastLogin = Calendar.getInstance();
+    }
+
+    public void onUpdate() {
+        this.modified = Calendar.getInstance();
     }
 
     public String getId() {
@@ -68,4 +85,31 @@ public class User {
         this.phones = phones;
     }
 
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public Calendar getModified() {
+        return modified;
+    }
+
+    public void setModified(Calendar modified) {
+        this.modified = modified;
+    }
+
+    public Calendar getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Calendar lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

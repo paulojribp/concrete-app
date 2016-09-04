@@ -8,6 +8,13 @@ public class Phone {
     private String number;
     private String ddd;
 
+    public Phone() {}
+
+    public Phone(String ddd, String number) {
+        this.ddd = ddd;
+        this.number = number;
+    }
+
     public String getNumber() {
         return number;
     }
