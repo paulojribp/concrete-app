@@ -58,7 +58,7 @@ public class UserControllerTest {
         assertThat(usuarioRetornado.getId(), is(notNullValue()));
         assertThat(usuarioRetornado.getCreated(), is(notNullValue()));
         assertThat(usuarioRetornado.getLastLogin(), is(notNullValue()));
-//        assertThat(usuarioRetornado.getToken(), is(notNullValue()));
+        assertThat(usuarioRetornado.getToken(), is(notNullValue()));
 
         assertThat(usuarioRetornado.getPassword(), not(equalTo(user.getPassword())));
     }

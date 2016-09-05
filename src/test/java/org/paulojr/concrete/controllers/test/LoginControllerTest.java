@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.paulojr.concrete.daos.FacadeTestDaos;
 import org.paulojr.concrete.models.User;
-import org.paulojr.concrete.services.UserService;
+import org.paulojr.concrete.services.LoginService;
 import org.paulojr.concrete.test.builders.UserBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -28,7 +28,7 @@ public class LoginControllerTest {
     private int port;
 
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
     @Autowired
     private FacadeTestDaos daos;
 
@@ -68,7 +68,7 @@ public class LoginControllerTest {
         User usuarioRetornado = path.getObject("", User.class);
 
         assertThat(usuarioRetornado.getEmail(), equalTo(user.getEmail()));
-        assertThat("Senha é válido!", userService.validatePassword(user.getPassword(), usuarioRetornado));
+        assertThat("Senha é válido!", loginService.validatePassword(user.getPassword(), usuarioRetornado));
     }
 
     @Test

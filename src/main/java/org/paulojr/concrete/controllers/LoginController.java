@@ -1,7 +1,7 @@
 package org.paulojr.concrete.controllers;
 
 import org.paulojr.concrete.models.User;
-import org.paulojr.concrete.services.UserService;
+import org.paulojr.concrete.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
 
     @PostMapping
     public ResponseEntity<User> singIn(@RequestBody User user) {
-        user = userService.validate(user);
+        user = loginService.validate(user);
 
         return ResponseEntity.ok(user);
     }
