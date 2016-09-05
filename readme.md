@@ -24,5 +24,5 @@ with the minimum json:
 ```
 
 And to see the user profile, you'll need to make a **GET** request to `http://paulojr-concrete-app.heroku.com/profile/{userId}`.
-In this request you will need to send the token JWS authentication in *Header* parameters.
+In this request you will need to send a `token` parameter to JWS authentication in *Request Headers*.
 
