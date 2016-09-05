@@ -1,9 +1,6 @@
 package org.paulojr.concrete.controllers;
 
-import org.paulojr.concrete.exceptions.InvalidTokenException;
-import org.paulojr.concrete.exceptions.Message;
-import org.paulojr.concrete.exceptions.NotAuthorizedException;
-import org.paulojr.concrete.exceptions.TokenNotFoundException;
+import org.paulojr.concrete.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,8 +22,8 @@ public class ExceptionHandlerAdvice {
                 .body(new Message(e.getMessage()));
     }
 
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<Message> catchUserNotFoundException(NotAuthorizedException e) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Message> catchUserNotFoundException(UnauthorizedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new Message(e.getMessage()));
     }

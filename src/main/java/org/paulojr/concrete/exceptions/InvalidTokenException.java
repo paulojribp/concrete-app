@@ -1,15 +1,9 @@
 package org.paulojr.concrete.exceptions;
 
-public class InvalidTokenException extends RuntimeException {
-
-    private final String message;
+public class InvalidTokenException extends UnauthorizedException {
 
     public InvalidTokenException() {
-        this.message = "Não autorizado";
+        super("Não autorizado");
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
 }

@@ -44,4 +44,8 @@ public class UserDao {
     public User findById(String id) {
         return manager.find(User.class, id);
     }
+
+    public void update(User user) {
+        manager.merge(user);
+    }
 }

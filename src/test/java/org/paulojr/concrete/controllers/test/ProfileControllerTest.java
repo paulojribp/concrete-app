@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Calendar;
+
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -116,7 +118,7 @@ public class ProfileControllerTest {
                 .email("peter@gmail.com")
                 .build();
 
-        JsonPath userPath = given()
+        given()
                     .header("Accept", "application/json")
                     .contentType("application/json")
                     .body(user)
@@ -124,6 +126,17 @@ public class ProfileControllerTest {
                     .statusCode(201)
                 .when()
                     .post("/user")
+                .andReturn()
+                    .jsonPath();
+
+        JsonPath userPath = given()
+                    .header("Accept", "application/json")
+                    .contentType("application/json")
+                    .body(user)
+                .expect()
+                    .statusCode(200)
+                .when()
+                    .post("/login")
                 .andReturn()
                     .jsonPath();
 
@@ -144,6 +157,45 @@ public class ProfileControllerTest {
         User receivedUser = path.getObject("", User.class);
         assertThat(user.getId(), equalTo(receivedUser.getId()));
         assertThat(user.getToken(), equalTo(receivedUser.getToken()));
+    }
+
+    @Test
+    public void shouldHaveSessionExpired() {
+        User user = UserBuilder.newInstance()
+                .password("abc123")
+                .email("drika@gmail.com")
+                .build();
+
+        JsonPath userPath = given()
+                .header("Accept", "application/json")
+                .contentType("application/json")
+                .body(user)
+                .expect()
+                .statusCode(201)
+                .when()
+                .post("/user")
+                .andReturn()
+                .jsonPath();
+
+        user = userPath.getObject("", User.class);
+        Calendar lastLogin = Calendar.getInstance();
+        lastLogin.add(Calendar.HOUR, -1);
+        user.setLastLogin(lastLogin);
+        userService.update(user);
+
+        JsonPath path = given()
+                .header("Accept", "application/json")
+                .header("token", user.getToken())
+                .contentType("application/json")
+                .body(user)
+                .expect()
+                .statusCode(401)
+                .when()
+                .get("/profile/" + user.getId())
+                .andReturn()
+                .jsonPath();
+
+        assertThat(path.getString("mensagem"), equalTo("Sessão inválida"));
     }
 
 }
