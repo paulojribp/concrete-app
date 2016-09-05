@@ -43,6 +43,7 @@ public class User {
         this.lastLogin = Calendar.getInstance();
     }
 
+    @PreUpdate
     public void onUpdate() {
         this.modified = Calendar.getInstance();
     }
